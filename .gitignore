@@ -1,1 +1,30 @@
 .obsidian
+# Environments
+.venv/
+venv/
+env/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+neurobench_testing/memtorch/
+neurobench_testing/.venv/
+
+**/MemTorch/
+**/memtorch/
+
+# Block dataset folders
+**/data/
+**/datasets/
+
+# Block large data files
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.npy
+*.npz
+*.csv
+*.h5
+*.hdf5

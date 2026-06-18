@@ -1,6 +1,5 @@
 ## metrics
 **Correctness:** must be measured to verify the validity of the solution. No thresholds are imposed so the benchmark leaderboard must be analysed to evaluate correctness - efficiency trade offs of solutions.
-
 **Timing:** measurements can be either sample throughput or execution time depending on the task.
 
 **Efficiency:** blah blah blah
