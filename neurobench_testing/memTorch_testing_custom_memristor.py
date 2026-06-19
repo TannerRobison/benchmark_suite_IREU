@@ -1,9 +1,4 @@
-"""
-This is a program to test out using memTorch with neurobench.
-June 17th, 2026
-Author: Tanner Robison, 
-Teuscher Lab
-"""
+from memtorch import memristor
 import torch
 import torch.nn as nn
 import snntorch as snn
@@ -14,6 +9,7 @@ from torch.utils.data import DataLoader
 from neurobench.models import SNNTorchModel
 from neurobench.benchmarks import Benchmark, benchmark
 from neurobench.datasets import SpeechCommands
+
 from neurobench.metrics.workload import (
         ActivationSparsity,
         SynapticOperations,
@@ -32,6 +28,8 @@ import copy
 from memtorch.mn.Module import patch_model
 from memtorch.map.Parameter import naive_map 
 from memtorch.bh.memristor import VTEAM
+
+from kaevin_memristor import TEAMMemristor
 
 beta = 0.9
 class SNN(nn.Module):
@@ -72,7 +70,7 @@ net = nn.Sequential(
 )
 
 #memristor patch
-reference_memristor = VTEAM()
+reference_memristor = TEAMMemristor
 
 net.load_state_dict(torch.load("examples/gsc/model_data/s2s_gsc_snntorch", map_location=device))
 
