@@ -23,8 +23,8 @@ class TEAMMemristor:
         self.alpha_on = alpha_on
         self.i_off = i_off
         self.i_on = i_on
-        self.g_on = g_on
-        self.g_off = g_off
+        self.G_on = G_on
+        self.G_off = G_off
         self.w_init = w_init
         self.p = p
 

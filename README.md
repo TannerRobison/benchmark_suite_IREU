@@ -1,5 +1,5 @@
 # benchmark_suite_IREU
-A benchmark suite for memristive and memcapacitive computing systems
+A benchmark suite for memristive and memcapacitive crossbar computing systems
 
 ## overview
 The memristive computing field lacks standardized benchmarks that control for workload characteristics, expose

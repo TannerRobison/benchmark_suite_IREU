@@ -1,5 +1,7 @@
 import torch
+import memtorch
 from memtorch.bh.memristor.Memristor import Memristor
+from memtorch.utils import clip, convert_range #idk if ill need this
 
 class MemtorchMemristor(Memristor):
     def __init__(
@@ -27,16 +29,8 @@ class MemtorchMemristor(Memristor):
         self.i_off = i_off
         self.p = p
 
-        # makes sure w starts in valid state
-        if not hasattr(self, 'w'):
-            self.w = torch.tensor(0.5)
+        #state variables
+        self.w = 0.5
+        self.g = 1/self.r_on
 
-
-    """
-    Updates w and computes new resistance
-   
-    """ 
-    def step(self, v, dt):
-        i = v / self.r_curr
-
-
+    def window()

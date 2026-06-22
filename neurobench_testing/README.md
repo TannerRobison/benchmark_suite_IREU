@@ -5,6 +5,7 @@ except for memtorch which needs to be cloned and compiled locally on linux syste
 I am not sure for windows or mac.
 
 ```
+python3 -m venv .venv
 pip install -r requirements.txt
 
 git clone --recursive https://github.com/coreylammie/MemTorch
