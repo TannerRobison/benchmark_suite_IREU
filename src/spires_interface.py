@@ -54,10 +54,10 @@ def init_spires_reservoir(reservoir_size):
             ctypes.c_size_t(int(reservoir_size)), # num neurons
             ctypes.c_size_t(int(reservoir_size)), # num neurons
             ctypes.c_size_t(2),                  # num_outputs
-            ctypes.c_double(0.9),                # spectral radius
+            ctypes.c_double(0),                # spectral radius
             ctypes.c_double(0.8),                # ei_ratio
             ctypes.c_double(1.0),                # input_strength
-            ctypes.c_double(0.1),                # connectivity
+            ctypes.c_double(0.0),                # connectivity
             ctypes.c_double(1.0),                # dt
             ctypes.c_int(1),                  # connectivity type ( 1 = sparse)
             ctypes.c_int(LIF_DISCRETE),       # neuron type
@@ -82,7 +82,7 @@ def free_spires_reservoir(reservoir_ptr):
 
 #change currents from tensor to a flat C pointer array for spires to read
 def send_currents_to_spires(reservoir_ptr, currents_tensor):
-    print("Sending currents to spires")
+    # print("Sending currents to spires")
     # ----- extract from pytorhc graph -----
     # .detach() removes it from auto gradient tracking
     # .cpu() make sure data is in RAM, not VRAM
@@ -96,7 +96,7 @@ def send_currents_to_spires(reservoir_ptr, currents_tensor):
 
     neurons_array = some_ptr[0]
 
-    print("updating the neurons")
+    # print("updating the neurons")
     for i in range(len(numpy_array)):
         neuron_ptr = neurons_array[i]
         input_current = numpy_array[i]
@@ -106,7 +106,7 @@ def send_currents_to_spires(reservoir_ptr, currents_tensor):
     return numpy_array
 
 def read_spikes_from_spires(reservoir_ptr, size=0):
-    print("Recieved spikes from spires")
+    # print("Recieved spikes from spires")
     #didnt do any safety checking womp womp
     returned_spikes = numpy.zeros(size, dtype=numpy.float64)
     c_spike_ptr = returned_spikes.ctypes.data_as(ctypes.POINTER(ctypes.c_float))

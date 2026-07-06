@@ -1,0 +1,14 @@
+* This is completely ai generated to be honest
+* Custom Behavioral Memristor Model
+.subckt custom_memristor plus minus state_node
+* Internal state capacitor to store value 'w'
+Cstate state_node 0 1IC=0.1
+
+* Example behavioral state derivative derivative equation (dw/dt)
+* Gbar represents the rate of change based on voltage across plus and minus
+Gstate 0 state_node value={V(plus,minus) * 1e3}
+
+* Behavioral current equation (I = V / R(w))
+* Resistance varies inversely with the voltage at 'state_node'
+Gmem plus minus value={V(plus,minus) / (100 + (10000 * (1 - V(state_node))))}
+.ends custom_memristor

@@ -44,6 +44,7 @@ int main(void) {
 
   /* 4. Train with ridge regression */
   s = spires_train_ridge(r, input_train, target_train, N_TRAIN, 1e-6);
+
   if (s != SPIRES_OK) {
     fprintf(stderr, "Training failed: %d\n", s);
     spires_reservoir_destroy(r);

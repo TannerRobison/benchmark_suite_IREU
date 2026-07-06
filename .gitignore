@@ -11,6 +11,11 @@ __pycache__/
 neurobench_testing/memtorch/
 neurobench_testing/.venv/
 
+neurobench_testing/
+
+pyspice_testing/
+
+#memTorch will need to be cloned & installed locally
 **/MemTorch/
 **/memtorch/
 
