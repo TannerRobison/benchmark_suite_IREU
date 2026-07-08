@@ -6,7 +6,7 @@ class TEAMMemristor:
 
     def __init__(
         self,
-        k_off=1,          # switching rate for off-state
+        
         k_on=-1,          # switching rate for on-state
         alpha_off=5,      # exponent controlling nonlinearity when switching off
         alpha_on=5,       # exponent controlling nonlinearity when switching on

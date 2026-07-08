@@ -1,0 +1,25 @@
+* RC Charging Circuit
+
+V1 in 0 PULSE(0 5 1u 1u 1u 100m 200m)
+
+R1 in out 1k
+
+C1 out 0 1u
+
+.tran 10u 50m
+
+.control
+run
+
+set finalindex = $&{length(v(in)) - 1}
+
+let final_vin = v(in)[$finalindex]
+let final_vout = v(out)[$finalindex]
+let final_current = v1#branch[$finalindex]
+
+echo "----- final time analysis -----"
+print final_vin final_vout
+print final_current
+
+.endc
+.end

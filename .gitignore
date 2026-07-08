@@ -13,8 +13,6 @@ neurobench_testing/.venv/
 
 neurobench_testing/
 
-pyspice_testing/
-
 #memTorch will need to be cloned & installed locally
 **/MemTorch/
 **/memtorch/
@@ -33,3 +31,5 @@ pyspice_testing/
 *.csv
 *.h5
 *.hdf5
+#AI code assistant
+.aider*
