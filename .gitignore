@@ -33,3 +33,6 @@ neurobench_testing/
 *.hdf5
 #AI code assistant
 .aider*
+
+#spires reservoir
+spires/

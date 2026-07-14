@@ -1,0 +1,34 @@
+* simulation.cir
+* Testbench for HP Memristor
+.options savecurrents
+.save all
+
+.include "hp_memristor.cir"
+
+* Voltage source
+.param Vin = ${VOLTAGE_IN}
+.param Vlast = ${VOLTAGE_LAST}
+V1 in 0 PULSE(VOLTAGE_LAST VOLTAGE_IN 0 1u 1u 1m 3m)
+
+* Memristor
+XMEM in out memristor 
++ Ron=1k 
++ Roff=100k 
++ Rinit=80k 
++ D=10n 
++ uv=10f 
++ p=1
+
+* Load resistor
+Rload out 0 1k
+
+.tran 1u 100m uic
+
+.control
+
+run
+write simulation.raw
+quit
+
+.endc
+.end

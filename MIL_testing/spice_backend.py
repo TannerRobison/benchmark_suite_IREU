@@ -1,5 +1,6 @@
 import subprocess
 import re
+from spicelib import RawRead
 
 class SpiceBackend:
     """This is what actually does all of the spice stuff"""
@@ -8,6 +9,8 @@ class SpiceBackend:
         self.voltage = 0
         self.current = 0
         self.time = 0
+        self.state = None
+        self.dt = 1e-9
 
     def simulate(self, voltage_signal: float, return_current: bool = False) -> float:
         """runs the simulation for one time step"""
@@ -43,7 +46,7 @@ class SpiceBackend:
         #need to find a way to pass voltage signal to ngspice here
         #also maybe a time series resolution??
         result = subprocess.run(
-                ["ngspice" "-b" "spicefile.cir"],
+                ["ngspice" "-b" "simulation.cir"],
                 capture_output=True,
                 text=True
         )
