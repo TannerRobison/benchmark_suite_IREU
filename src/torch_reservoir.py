@@ -14,7 +14,7 @@ import time
 # ----- PARAMETERS -----
 NUM_INPUTS = 1
 NUM_OUTPUTS = 1
-NUM_NEURONS = 2000
+NUM_NEURONS = 800
 time_steps = 2000
 
 input_layer = torch.nn.Linear(NUM_INPUTS, NUM_NEURONS, bias=False)
@@ -122,12 +122,12 @@ test_steps = np.arange(800, time_steps)
 plt.figure(figsize=(10, 5))
 plt.plot(test_steps, y_test, label="True Future Wave", color="black", linestyle="dashed")
 plt.plot(test_steps, predictions, label="Reservoir Prediction", color="blue", alpha=0.8)
-plt.title("spires memristor Time-Series Forecasting")
+plt.title("spires memristor Time-Series prediction")
 plt.xlabel("time steps")
 plt.ylabel("Amplitude")
 plt.legend()
 plt.tight_layout()
-plt.show()
+plt.savefig("memristor_spires_proof.png")
 
 free_spires_reservoir(spires_reservoir)
 
