@@ -1,57 +1,64 @@
-*==========================================================
-* 2x2 HP Memristor Crossbar
-*==========================================================
+* Generating a crossbar with:
+*Rows: 5
+*Columns: 5
 
 .include "hp_memristor.cir"
 
-******************************************************
-* Input Voltages (Rows)
-******************************************************
-
-.param VIN0=0.25
-.param VIN1=0.75
-
+* Input Voltages
+.param VIN0=1.2
+.param VIN1=3.2999999999999998
+.param VIN2=5
+.param VIN3=4.2999999999999998
+.param VIN4=2.1000000000000001
 VROW0 row0 0 DC {VIN0}
 VROW1 row1 0 DC {VIN1}
+VROW2 row2 0 DC {VIN2}
+VROW3 row3 0 DC {VIN3}
+VROW4 row4 0 DC {VIN4}
 
-******************************************************
 * Memristor Array
-******************************************************
+X00 row0 col0 memristor PARAMS: Rinit=1000
+X01 row0 col1 memristor PARAMS: Rinit=1000
+X02 row0 col2 memristor PARAMS: Rinit=1000
+X03 row0 col3 memristor PARAMS: Rinit=1000
+X04 row0 col4 memristor PARAMS: Rinit=1000
+X10 row1 col0 memristor PARAMS: Rinit=1000
+X11 row1 col1 memristor PARAMS: Rinit=1000
+X12 row1 col2 memristor PARAMS: Rinit=1000
+X13 row1 col3 memristor PARAMS: Rinit=1000
+X14 row1 col4 memristor PARAMS: Rinit=1000
+X20 row2 col0 memristor PARAMS: Rinit=3000
+X21 row2 col1 memristor PARAMS: Rinit=3000
+X22 row2 col2 memristor PARAMS: Rinit=3000
+X23 row2 col3 memristor PARAMS: Rinit=3000
+X24 row2 col4 memristor PARAMS: Rinit=3000
+X30 row3 col0 memristor PARAMS: Rinit=5000
+X31 row3 col1 memristor PARAMS: Rinit=5000
+X32 row3 col2 memristor PARAMS: Rinit=5000
+X33 row3 col3 memristor PARAMS: Rinit=5000
+X34 row3 col4 memristor PARAMS: Rinit=5000
+X40 row4 col0 memristor PARAMS: Rinit=4000
+X41 row4 col1 memristor PARAMS: Rinit=4000
+X42 row4 col2 memristor PARAMS: Rinit=4000
+X43 row4 col3 memristor PARAMS: Rinit=4000
+X44 row4 col4 memristor PARAMS: Rinit=4000
 
-X00 row0 col0 memristor PARAMS: Rinit=1k
-X01 row0 col1 memristor PARAMS: Rinit=100k
-X02 row0 col2 memristor PARAMS: Rinit=50k
-X03 row0 col3 memristor PARAMS: Rinit=70k
-
-X10 row1 col0 memristor PARAMS: Rinit=1k
-X11 row1 col1 memristor PARAMS: Rinit=100k
-X12 row1 col2 memristor PARAMS: Rinit=50k
-X13 row1 col3 memristor PARAMS: Rinit=70k
-
-******************************************************
 * Column Loads
-******************************************************
+RLOAD0 col0 0 50
+RLOAD1 col1 0 50
+RLOAD2 col2 0 50
+RLOAD3 col3 0 50
+RLOAD4 col4 0 50
 
-RLOAD0 col0 0 1k
-RLOAD1 col1 0 1k
-RLOAD2 col2 0 1k
-RLOAD3 col3 0 1k
-
-******************************************************
 * Simulation
-******************************************************
-
 .tran 1n 100n uic
-
 .control
-
 run
-
 print v(col0)
 print v(col1)
 print v(col2)
 print v(col3)
-save all
-.endc
+print v(col4)
 
+.endc
 .end
