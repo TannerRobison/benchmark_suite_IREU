@@ -12,7 +12,10 @@ static int validate_config(const Crossbar_Config *config) {
     if (config->columns == 0) {
         return -1;
     }
-    if (config->input_voltages == NULL) {
+    if (config->input_series == NULL) {
+        return -1;
+    }
+    if (config->num_samples == 0) {
         return -1;
     }
     if (config->initial_resistance == NULL) {
@@ -58,30 +61,24 @@ static int write_header(FILE *file, const Crossbar_Config *config) {
     return 0;
 }
 
-static int write_input_voltages(FILE *file, const Crossbar_Config *config) {
-    if (fprintf(file, "\n* Input Voltages\n") < 0) {
-        fprintf(stderr, "Failed to write input voltages comment label thing");
-        return -1;
-    } 
+static int write_input_series(FILE *file, const Crossbar_Config *config) {
+    fprintf(file, "\n* SPIRES reservoir states\n");
 
-    //create a input voltage parameter for each row
     for (size_t row = 0; row < config->rows; row++) {
-        if (fprintf(file, ".param VIN%zu=%.17g\n", row, config->input_voltages[row]) < 0) {
-            fprintf(stderr, "Failed to write input voltage parameters");
-            return -1;
-        }
-    }
-    printf("\n");
+        fprintf(file, "VROW%zu row%zu 0 PWL(", row, row);
 
-    //apply the input voltage to the actual row
-    for (size_t row = 0; row < config->rows; row++) {
-        if (fprintf(file, "VROW%zu row%zu 0 DC {VIN%zu}\n", row, row, row) < 0) {
-            fprintf(stderr, "Failed to write input voltages");
-            return -1;
-        }
-    }
+        for (size_t sample = 0; sample < config->num_samples; sample++) {
+            double time = sample * config->time_step;
+            double state = config->input_series[sample * config->rows + row];
 
-    return 0;
+            //scale neuron states to safe read voltages
+            double voltage = state * 0.1;
+
+            fprintf(file, "%.17g %.17g ", time, voltage);
+        }
+        fprintf(file, ")\n");
+    }
+    return ferror(file) ? -1 : 0;
 }
 
 static int write_memristor_array(FILE *file, const Crossbar_Config *config) {
@@ -96,7 +93,8 @@ static int write_memristor_array(FILE *file, const Crossbar_Config *config) {
             if (fprintf(file, 
                 "X%zu%zu row%zu col%zu %s" 
                 " PARAMS: Rinit=%.0f\n", row, column, row, column, 
-                config->subcircuit_name, config->initial_resistance[row]) < 0) {
+                config->subcircuit_name, 
+                config->initial_resistance[row * config->columns + column]) < 0) {
                 fprintf(stderr, "Failed to write memristor array");
                 return -1;
             }
@@ -121,14 +119,14 @@ static int write_column_loads(FILE *file, const Crossbar_Config *config) {
     return 0;
 }
 
-
 static int write_simulation(FILE *file, const Crossbar_Config *config) {
     if (fprintf(file, "\n* Simulation\n") < 0) {
         fprintf(stderr, "Failed to write simulation header");
         return -1;
     }
     
-    if (fprintf(file, ".tran 1n 100n uic\n.control\nrun\n") < 0) {
+    if (fprintf(file, ".tran %.17g %.17g uic\n.control\nrun\n", 
+                config->time_step, config->stop_time) < 0) {
         fprintf(stderr, "Failed to write simulation command");
         return -1;
     }
@@ -166,7 +164,7 @@ int generate_crossbar(const char *output_filename,
     }
 
     if (write_header(file, config) != 0 ||
-        write_input_voltages(file, config) != 0 ||
+        write_input_series(file, config) != 0 ||
         write_memristor_array(file, config) != 0 ||
         write_column_loads(file, config) != 0 ||
         write_simulation(file, config) != 0 ||

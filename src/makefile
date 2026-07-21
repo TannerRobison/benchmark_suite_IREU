@@ -1,0 +1,37 @@
+CC := clang
+
+TARGET := spires_interface_test
+SPIRES_DIR := ../spires
+
+SOURCES := spires_interface_test.c spires_interface.c crossbar_generator.c
+OBJECTS := $(SOURCES:.c=.o)
+
+PLPLOT_LIBS   := $(shell pkg-config --libs plplot)
+
+CPPFLAGS := -I. -I$(SPIRES_DIR)/include
+CFLAGS := -Wall -Wextra -Wpedantic -std=c11 -g -fopenmp
+LDFLAGS := -L$(SPIRES_DIR)/lib -Wl,-rpath,'$$ORIGIN/../spires/lib'
+LDLIBS := -lspires -lopenblas -llapacke -lm -fopenmp $(PLPLOT_LIBS)
+
+PLPLOT_CFLAGS := $(shell pkg-config --cflags plplot)
+CFLAGS += $(PLPLOT_CFLAGS)
+
+.PHONY: all run clean debug
+
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(OBJECTS) $(LDFLAGS) $(LDLIBS) -o $(TARGET)
+
+%.o: %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+run: $(TARGET)
+	LD_LIBRARY_PATH=$(SPIRES_DIR)/lib:$$LD_LIBRARY_PATH ./$(TARGET)
+
+debug: CFLAGS += -fsanitize=address,undefined -fno-omit-frame-pointer
+debug: LDFLAGS += -fsanitize=address,undefined
+debug: clean $(TARGET)
+
+clean:
+	rm -f $(OBJECTS) $(TARGET)

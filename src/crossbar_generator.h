@@ -4,15 +4,17 @@
 #include <stddef.h>
 
 typedef struct {
-    size_t rows;
-    size_t columns;
+    size_t rows; //number of neurons
+    size_t columns; //number of outputs
 
     //array of row input voltages.
     //length must equal rows (# of rows)
-    const double *input_voltages;
+    const double *input_series;
+    size_t num_samples;
 
     //array of initial resistances
     //stored in row-major order
+    //size must be rows * colums
     const double *initial_resistance;
 
     //path to the memory component path

@@ -1,3 +1,5 @@
+OH MY GOD SO MUCH HAS CHANGED NEED TO UPDATE
+
 # Spires reservoir simulated on memristor crossbar using memTorch
 ## setup
 ### general
