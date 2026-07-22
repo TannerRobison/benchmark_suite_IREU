@@ -1,9 +1,9 @@
 CC := clang
 
-TARGET := spires_interface_test
+TARGET := main
 SPIRES_DIR := ../spires
 
-SOURCES := spires_interface_test.c spires_interface.c crossbar_generator.c
+SOURCES := main.c spires_interface.c crossbar_generator.c read_crossbar.c
 OBJECTS := $(SOURCES:.c=.o)
 
 PLPLOT_LIBS   := $(shell pkg-config --libs plplot)

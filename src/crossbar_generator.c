@@ -133,13 +133,19 @@ static int write_simulation(FILE *file, const Crossbar_Config *config) {
     return 0;
 }
 
-//This probably needs to change
 static int write_save_date(FILE *file, const Crossbar_Config *config) {
-    for (size_t column = 0; column < config->columns; column++) {
-        if (fprintf(file, "print v(col%zu)\n", column) < 0) {
-            fprintf(stderr, "Failed to write print statements");
+    fprintf(file, "linearize");
+    for (int column = 0; column < config->columns; column++) {
+        if (fprintf(file, " v(col%zu)", column) < 0) {
+            fprintf(stderr, "Failed to write linearize statements");
             return -1;
         }
+    }
+
+    fprintf(file, "\nwrdata crossbar_output.dat");
+    for (int column = 0; column < config->columns; column++) {
+        fprintf(file, " v(col%zu)", column); //ive given up on error checking
+                                     //Im doing too much of it
     }
 
     if (fprintf(file, "\n.endc\n.end") < 0) {
